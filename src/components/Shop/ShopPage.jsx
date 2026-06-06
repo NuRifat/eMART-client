@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ProductList from './ProductList';
-import apiClient from '../../services/api-client';
 import Pagination from './Pagination';
+import useFetchProduct from '../../hooks/useFetchProducts';
 
 const ShopPage = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [totalPages, setTotalPages] = useState(0);
+    // const [products, setProducts] = useState([]);
+    // const [loading, setLoading] = useState(false);
+    // const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const {products, loading, totalPages} = useFetchProduct(currentPage);
 
-    useEffect(() => {
-        fetchProducts();
-    },[currentPage]);
+    // useEffect(() => {
+    //     fetchProducts();
+    // },[currentPage]);
 
     // const fetchProducts = () => {
     //     setLoading(true);
@@ -23,21 +24,21 @@ const ShopPage = () => {
     //         })
     //         .catch((error) => console.log(error))
     //         .finally(() => setLoading(false));
-    // };
-    const fetchProducts = async () => {
-        setLoading(true);
-        try {
-            const response = await apiClient.get(`/products/?page=${currentPage}`);
-            const data = await response.data;
+    // }; // this one is not an ideal way, below is the good way
+    // const fetchProducts = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const response = await apiClient.get(`/products/?page=${currentPage}`);
+    //         const data = await response.data;
 
-            setProducts(data.results);
-            setTotalPages(Math.ceil(data.count / data.results.length));
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    //         setProducts(data.results);
+    //         setTotalPages(Math.ceil(data.count / data.results.length));
+    //     } catch (error) {
+    //         console.log(error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }; // even this one is not good, better way is to use a custom hook useFetchProduct
 
 
     return (
