@@ -41,7 +41,27 @@ const useAuth = () => {
       setErrorMsg(error.response.data?.detail);    }
   };
 
-  return { user, errorMsg, loginUser };
+  const registerUser = async (userData) => {
+    setErrorMsg("");
+    try {
+      await apiClient.post("/auth/users/", userData);
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errorMessage = Object.values(error.response.data)
+          .flat()
+          .join("\n");
+        setErrorMsg(errorMessage);
+        return { success: false, message: errorMessage };
+      }
+      setErrorMsg("Registratation failed. Please try again");
+      return {
+        success: false,
+        message: "Registratation failed. Please try again",
+      };
+    }
+  };
+
+  return { user, errorMsg, loginUser, registerUser };
 };
 
 export default useAuth;
