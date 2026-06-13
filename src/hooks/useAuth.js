@@ -35,6 +35,8 @@ const useAuth = () => {
       const response = await apiClient.post("/auth/jwt/create/", userData);
       setAuthTokens(response.data);
       localStorage.setItem("authTokens", JSON.stringify(response.data));
+
+      await fetchUserProfile();
     } catch (error) {
       setErrorMsg(error.response.data?.detail);    }
   };

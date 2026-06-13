@@ -15,8 +15,12 @@ const Login = () => {
   const { user, errorMsg, loginUser } = useAuthContext();
 
   const onSubmit = async (data) => {
-    await loginUser(data);
-    navigate("/dashboard");
+    try {
+      await loginUser(data);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log("Login Failed", error);
+    }
   };
 
   return (
