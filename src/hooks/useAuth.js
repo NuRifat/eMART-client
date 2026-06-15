@@ -41,10 +41,16 @@ const useAuth = () => {
       setErrorMsg(error.response.data?.detail);    }
   };
 
+  // User Registration
   const registerUser = async (userData) => {
     setErrorMsg("");
     try {
       await apiClient.post("/auth/users/", userData);
+      return {
+        success: true,
+        message:
+          "Registration successfull. Redirecting...",
+      };
     } catch (error) {
       if (error.response && error.response.data) {
         const errorMessage = Object.values(error.response.data)

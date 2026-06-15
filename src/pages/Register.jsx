@@ -1,10 +1,13 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAuthContext from "../hooks/useAuthContext";
 import ErroAlert from "../components/ErrorAlert";
+import { useState } from "react";
 
 const Register = () => {
   const { registerUser, errorMsg } = useAuthContext();
+  const [successMsg, setSuccessMsg] = useState("");
+  const navigate = useNavigate();
 
   const {
     register,
@@ -18,6 +21,10 @@ const Register = () => {
     try {
       const response = await registerUser(data);
       console.log(response);
+      if (response.success) {
+        setSuccessMsg(response.message);
+        setTimeout(() => navigate("/login"), 3000);
+      }
     } catch (error) {
       console.log("Registration failed", error);
     }
@@ -28,6 +35,24 @@ const Register = () => {
       <div className="card w-full max-w-md bg-base-100 shadow-xl">
         <div className="card-body">
           {errorMsg && <ErroAlert error={errorMsg} />}
+          {successMsg && (
+            <div role="alert" className="alert alert-success">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 shrink-0 stroke-current"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>{successMsg}</span>
+            </div>
+          )}
 
           <h2 className="card-title text-2xl font-bold">Sign Up</h2>
           <p className="text-base-content/70">
@@ -168,7 +193,9 @@ const Register = () => {
               )}
             </div>
 
-            <button type="submit" className="btn btn-primary w-full">Submit</button>
+            <button type="submit" className="btn btn-primary w-full">
+              Submit
+            </button>
           </form>
 
           <div className="text-center mt-4">
