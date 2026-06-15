@@ -49,7 +49,7 @@ const useAuth = () => {
       return {
         success: true,
         message:
-          "Registration successfull. Redirecting...",
+          "Registration successfull. Check email for activate",
       };
     } catch (error) {
       if (error.response && error.response.data) {

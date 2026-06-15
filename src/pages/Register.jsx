@@ -7,7 +7,7 @@ import { useState } from "react";
 const Register = () => {
   const { registerUser, errorMsg } = useAuthContext();
   const [successMsg, setSuccessMsg] = useState("");
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const {
     register,
@@ -23,7 +23,7 @@ const Register = () => {
       console.log(response);
       if (response.success) {
         setSuccessMsg(response.message);
-        setTimeout(() => navigate("/login"), 3000);
+        // setTimeout(() => navigate("/login"), 3000);
       }
     } catch (error) {
       console.log("Registration failed", error);
