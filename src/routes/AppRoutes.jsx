@@ -8,6 +8,8 @@ import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import PrivateRoute from "../components/PrivateRoute";
 import ActivateAccount from "../components/Registration/ActivateAccount";
+import DashboardLayout from "../layouts/DashboardLayout";
+import Profile from "../pages/Profile";
 
 const AppRoutes = () => {
   return (
@@ -26,10 +28,14 @@ const AppRoutes = () => {
         path="dashboard"
         element={
           <PrivateRoute>
-            <Dashboard />
+            {" "}
+            <DashboardLayout />{" "}
           </PrivateRoute>
         }
-      />
+      >
+        <Route index element={<Dashboard />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
     </Routes>
   );
 };
