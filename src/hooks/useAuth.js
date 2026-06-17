@@ -16,6 +16,24 @@ const useAuth = () => {
     if (authTokens) fetchUserProfile();
   }, [authTokens]);
 
+  const handleAPIError = (
+    error,
+    defaultMessage = "Something Went Wrong! Try Again",
+  ) => {
+    console.log(error);
+
+    if (error.response && error.response.data) {
+      const errorMessage = Object.values(error.response.data).flat().join("\n");
+      setErrorMsg(errorMessage);
+      return { success: false, message: errorMessage };
+    }
+    setErrorMsg(defaultMessage);
+    return {
+      success: false,
+      message: defaultMessage,
+    };
+  };
+
   // Fetch user Profile
   const fetchUserProfile = async () => {
     try {
@@ -32,13 +50,27 @@ const useAuth = () => {
   const updateUserProfile = async (data) => {
     setErrorMsg("");
     try {
-      apiClient.put("/auth/users/me/", data, {
+      await apiClient.put("/auth/users/me/", data, {
         headers: {
           Authorization: `JWT ${authTokens?.access}`,
         },
       });
     } catch (error) {
-      console.log(error);
+      return handleAPIError(error);
+    }
+  };
+
+  // Password Change
+  const changePassword = async (data) => {
+    setErrorMsg("");
+    try {
+      await apiClient.post("/auth/users/set_password/", data, {
+        headers: {
+          Authorization: `JWT ${authTokens?.access}`,
+        },
+      });
+    } catch (error) {
+      return handleAPIError(error);
     }
   };
 
@@ -50,12 +82,14 @@ const useAuth = () => {
       setAuthTokens(response.data);
       localStorage.setItem("authTokens", JSON.stringify(response.data));
 
+      // After login set user
       await fetchUserProfile();
     } catch (error) {
-      setErrorMsg(error.response.data?.detail);    }
+      setErrorMsg(error.response.data?.detail);
+    }
   };
 
-  // User Registration
+  // Register User
   const registerUser = async (userData) => {
     setErrorMsg("");
     try {
@@ -63,21 +97,10 @@ const useAuth = () => {
       return {
         success: true,
         message:
-          "Registration successfull. Check email for activate",
+          "Registration successfull. Check your email to activate your account.",
       };
     } catch (error) {
-      if (error.response && error.response.data) {
-        const errorMessage = Object.values(error.response.data)
-          .flat()
-          .join("\n");
-        setErrorMsg(errorMessage);
-        return { success: false, message: errorMessage };
-      }
-      setErrorMsg("Registratation failed. Please try again");
-      return {
-        success: false,
-        message: "Registratation failed. Please try again",
-      };
+      return handleAPIError(error, "Registration Failed! Try Again");
     }
   };
 
@@ -88,7 +111,15 @@ const useAuth = () => {
     localStorage.removeItem("authTokens");
   };
 
-  return { user, errorMsg, loginUser, registerUser, logoutUser, updateUserProfile };
+  return {
+    user,
+    errorMsg,
+    loginUser,
+    registerUser,
+    logoutUser,
+    updateUserProfile,
+    changePassword,
+  };
 };
 
 export default useAuth;
