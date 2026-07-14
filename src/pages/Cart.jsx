@@ -3,7 +3,7 @@ import useCartContext from "../hooks/useCartContext";
 import CartItemList from "../components/Cart/CartItemList";
 
 const Cart = () => {
-  const { cart, loading, createOrGetCart, updateCartItemQuantity } =
+  const { cart, loading, createOrGetCart, updateCartItemQuantity, deleteCartItems } =
     useCartContext();
 
   const [localCart, setLocalCart] = useState(cart); 
@@ -18,6 +18,7 @@ const Cart = () => {
 
 
   const handleUpdateQuantity = async (itemId, newQuantity) => {
+    const prevLocalCartCopy = localCart; // store a copy of localCart
     setLocalCart((prevLocalCart) => ({
       ...prevLocalCart,
       items: prevLocalCart.items.map((item) => 
@@ -25,6 +26,20 @@ const Cart = () => {
     }));
     try {
       await updateCartItemQuantity(itemId, newQuantity);
+    } catch (error) {
+      console.log(error);
+      setLocalCart(prevLocalCartCopy);
+    }
+  };
+
+  const handleRemoveItem = async (itemId) => {
+    setLocalCart((prevLocalCart) => ({
+      ...prevLocalCart,
+      items: prevLocalCart.items.filter((item) => item.id != itemId),
+    }));
+
+    try {
+      await deleteCartItems(itemId);
     } catch (error) {
       console.log(error);
     }
@@ -39,6 +54,7 @@ const Cart = () => {
           <CartItemList
             items={localCart.items}
             handleUpdateQuantity={handleUpdateQuantity}
+            handleRemoveItem={handleRemoveItem}
           />
         </Suspense>
       </div>
