@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 //import apiClient from "../services/api-client";
 import authApiClient from "../Services/auth-api-client";
 
@@ -72,6 +72,15 @@ const useCart = () => {
     },
     [cartId]
   );
+
+  useEffect(() => {
+    const initializeCart = async () => {
+      setLoading(true);
+      await createOrGetCart();
+      setLoading(false);
+    };
+    initializeCart();
+  }, [createOrGetCart]);
 
   return { cart, loading, createOrGetCart, AddCartItems, updateCartItemQuantity, deleteCartItems };
 };
