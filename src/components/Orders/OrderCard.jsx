@@ -1,8 +1,8 @@
 import useAuthContext from "../../hooks/useAuthContext";
 import OrderTable from "./OrderTable";
 
-const OrderCard = ({ order }) => {
-  const {user} = useAuthContext();
+const OrderCard = ({ order, onCancel }) => {
+  const { user } = useAuthContext();
   return (
     <div className="bg-white rounded-lg shadow-lg mb-8 overflow-hidden">
       <div className="bg-gray-100 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -18,15 +18,20 @@ const OrderCard = ({ order }) => {
           >
             {order.status}
           </span>
-          {order.status !== "Deliverd" && (
-            <span className="text-blue-700 hover:underline">Cancel</span>
+          {order.status !== "Deliverd" && order.status !== "Canceled" && (
+            <button
+              onClick={() => onCancel(order.id)}
+              className="text-blue-700 hover:underline"
+            >
+              Cancel
+            </button>
           )}
         </div>
       </div>
       <div className="p-6">
         <h3 className="font-medium text-lg mb-4">Order Items</h3>
         {/* Order Items Table  */}
-        < OrderTable items={order.items} />
+        <OrderTable items={order.items} />
       </div>
       <div className="border-t p-6 flex flex-col items-end">
         <div className="space-y-2 w-full max-w-[200px]">
