@@ -8,8 +8,11 @@ import {
   FiUsers,
 } from "react-icons/fi";
 import { Link } from "react-router";
+import useAuthContext from "../../hooks/useAuthContext";
 
 const Sidebar = () => {
+  const {user} = useAuthContext();
+  
   const customerMenues = [
     { to: "/dashboard", icon: FiBarChart2, label: "Dashboard" },
     { to: "/dashboard/cart", icon: FiShoppingCart, label: "Cart" },
@@ -28,7 +31,7 @@ const Sidebar = () => {
     { to: "/users", icon: FiUsers, label: "Users" },
   ];
 
-  const menuItems = UserActivation.is_staff ? adminMenues : customerMenues;
+  const menuItems = user.is_staff ? adminMenues : customerMenues;
   
   return (
     <div className="drawer-side z-10">
