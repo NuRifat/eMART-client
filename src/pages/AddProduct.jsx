@@ -13,6 +13,8 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([]);
   const [productId, setProductId] = useState(null);
   const [previewImages, setPreviewImages] = useState([]);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Fetch Categories
   useEffect(() => {
@@ -26,7 +28,7 @@ const AddProduct = () => {
   const handleProductAdd = async (data) => {
     try {
       const productRes = await authApiClient.post("/products/", data);
-      setProductId(productRes.data);
+      setProductId(productRes.data.id);
     } catch (error) {
       console.log("Error adding product", error);
     }
@@ -36,7 +38,27 @@ const AddProduct = () => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     console.log(files);
+    setImages(files);
     setPreviewImages(files.map((file) => URL.createObjectURL(file)));
+  };
+
+  // Handle Image Upload
+  const handleUpload = async () => {
+    if (!images.length) return alert("Please select images.");
+    setLoading(true);
+    try {
+      for (const image of images) {
+        const formData = new FormData();
+        formData.append("image", image);
+        console.log(formData);
+        await authApiClient.post(`/products/${productId}/images/`, formData);
+      }
+      alert("Images uploaded successfully");
+    } catch (error) {
+      console.log(("Error uploading image", error));
+    } finally {
+      setLoading(false)
+    }
   };
 
   return (
@@ -145,8 +167,12 @@ const AddProduct = () => {
               ))}
             </div>
           )}
-          <button className="btn btn-primary w-full mt-2">
-            Upload Images
+          <button
+            onClick={handleUpload}
+            className="btn btn-primary w-full mt-2"
+            disabled={loading}
+          >
+            {loading ? "Uploading images..." : "Upload Images"}
           </button>
         </div>
       )}
