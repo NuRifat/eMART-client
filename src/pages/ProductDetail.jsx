@@ -1,9 +1,10 @@
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AddToCartButton from "../components/ProductDetails/AddToCartButton";
 import ProductImageGallery from "../components/ProductDetails/ProductImageGallery";
 import apiClient from "../services/api-client";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link, useParams } from "react-router";
+import ReviewSection from "../components/Reviews/ReviewSection";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -88,6 +89,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      < ReviewSection />
     </div>
   );
 };
