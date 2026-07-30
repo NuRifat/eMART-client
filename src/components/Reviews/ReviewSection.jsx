@@ -4,12 +4,16 @@ import authApiClient from "../../services/auth-api-client";
 import { useEffect, useState } from "react";
 import ReviewList from "./ReviewList";
 import apiClient from "../../services/api-client";
+import useAuthContext from "../../hooks/useAuthContext";
 
 const ReviewSection = () => {
   const { productId } = useParams();
   const [reviews, setReviews] = useState([]);
   const [userCanReview, setUserCanReview] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const [editReview, setEditReview] = useState({ ratings: 0, comment: "" });
+  const [editingId, setEditingId] = useState(null);
+  const { user } = useAuthContext();
 
   const fetchReviews = async () => {
     setLoading(true);
@@ -38,6 +42,18 @@ const ReviewSection = () => {
     try {
       const res = await authApiClient.get(`/orders/has-ordered/${productId}/`);
       setUserCanReview(res.data.hasOrdered);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleUpdateReview = async (reviewId) => {
+    try {
+      await authApiClient.put(
+        `/products/${productId}/reviews/${reviewId}/`,
+        editReview,
+      );
+      setEditingId(null);
+      fetchReviews();
     } catch (error) {
       console.log(error);
     }
@@ -82,6 +98,12 @@ const ReviewSection = () => {
       ) : (
         <ReviewList
           reviews={reviews}
+          user={user}
+          editReview={editReview}
+          setEditReview={setEditReview}
+          editingId={editingId}
+          setEditingId={setEditingId}
+          handleUpdateReview={handleUpdateReview}
         />
       )}
     </div>

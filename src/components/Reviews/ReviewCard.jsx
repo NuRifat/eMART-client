@@ -1,6 +1,16 @@
 import { FaStar } from "react-icons/fa";
+import EditReviewForm from "./EditReviewForm";
 
-const ReviewCard = ({ review }) => {
+const ReviewCard = ({
+  review,
+  user,
+  editReview,
+  setEditReview,
+  onEditClick,
+  isEditing,
+  onCancelEdit,
+  onSaveEdit,
+}) => {
   console.log(review);
   return (
     <div className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow border border-base-200 rounded-xl overflow-hidden">
@@ -22,22 +32,34 @@ const ReviewCard = ({ review }) => {
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <button className="btn btn-sm btn-outline btn-primary">
-              {" "}
-              Edit{" "}
-            </button>
-            <button className="btn btn-sm btn-outline btn-error">
-              {" "}
-              Delete{" "}
-            </button>
+          {user && user.id === review.user.id && (
+            <div className="flex gap-2">
+              <button
+                onClick={onEditClick}
+                className="btn btn-sm btn-outline btn-primary"
+              >
+                Edit
+              </button>
+              <button className="btn btn-sm btn-outline btn-error">
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+        {isEditing ? (
+          <EditReviewForm
+            editReview={editReview}
+            setEditReview={setEditReview}
+            onCancelEdit={onCancelEdit}
+            onSave={() => onSaveEdit(review.id)}
+          />
+        ) : (
+          <div className="mt-4">
+            <p className="leading-relaxed whitespace-pre-line">
+              {review.comment}
+            </p>
           </div>
-        </div>
-        <div className="mt-4">
-          <p className="leading-relaxed whitespace-pre-line">
-            {review.comment}
-          </p>
-        </div>
+        )}
       </div>
     </div>
   );
