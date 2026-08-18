@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import OrderCard from "../components/Orders/OrderCard";
-import authApiClient from "../Services/auth-api-client";
+import authApiClient from "../services/auth-api-client";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);

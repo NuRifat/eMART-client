@@ -1,4 +1,4 @@
-import authApiClient from "../../Services/auth-api-client";
+import authApiClient from "../../services/auth-api-client";
 
 const CartSummary = ({ totalPrice, itemCount, cartId }) => {
   const shipping = itemCount == 0 || parseFloat(totalPrice) > 100 ? 0 : 10;

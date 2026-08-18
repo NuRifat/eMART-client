@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 //import apiClient from "../services/api-client";
-import authApiClient from "../Services/auth-api-client";
+import authApiClient from "../services/auth-api-client";
 
 const useCart = () => {
   // const [authToken, setAuthToken] = useState(

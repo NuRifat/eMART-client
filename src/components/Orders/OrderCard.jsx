@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useAuthContext from "../../hooks/useAuthContext";
-import authApiClient from "../../Services/auth-api-client";
+import authApiClient from "../../services/auth-api-client";
 import OrderTable from "./OrderTable";
 
 const OrderCard = ({ order, onCancel }) => {
