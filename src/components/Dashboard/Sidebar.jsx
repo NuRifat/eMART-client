@@ -15,20 +15,21 @@ const Sidebar = () => {
   
   const customerMenues = [
     { to: "/dashboard", icon: FiBarChart2, label: "Dashboard" },
+    { to: "/shop", icon: FiPackage, label: "Products" },
     { to: "/dashboard/cart", icon: FiShoppingCart, label: "Cart" },
     { to: "/dashboard/orders", icon: FiShoppingCart, label: "Orders" },
   ];
 
   const adminMenues = [
     { to: "/dashboard", icon: FiBarChart2, label: "Dashboard" },
-    { to: "/products", icon: FiPackage, label: "Products" },
+    { to: "/shop", icon: FiPackage, label: "Products" },
     { to: "/dashboard/products/add", icon: FiPlusCircle, label: "Add Product" },
-    { to: "/categories", icon: FiTag, label: "Categories" },
-    { to: "/categories/add", icon: FiPlusCircle, label: "Add Category" },
+    { to: "#", icon: FiTag, label: "Categories" },
+    { to: "#", icon: FiPlusCircle, label: "Add Category" },
     { to: "/dashboard/cart", icon: FiShoppingCart, label: "Cart" },
     { to: "/dashboard/orders", icon: FiShoppingCart, label: "Orders" },
-    { to: "/reviews", icon: FiStar, label: "Reviews" },
-    { to: "/users", icon: FiUsers, label: "Users" },
+    { to: "#", icon: FiStar, label: "Reviews" },
+    { to: "#", icon: FiUsers, label: "Users" },
   ];
 
   const menuItems = user.is_staff ? adminMenues : customerMenues;
@@ -43,9 +44,9 @@ const Sidebar = () => {
       <aside className="menu bg-base-200 w-64 min-h-full p-4 text-base-content">
         {/* Sidebar header */}
         <div>
-          <Link to="/" className="flex items-center gap-2 mb-6 px-2" >
+          <Link to="/" className="btn btn-ghost text-2xl font-bold tracking-tight text-primary hover:bg-transparent" >
             <FiShoppingCart className="h-6 w-6" />
-            <h1 className="text-xl font-bold">PhiMart</h1>
+            <h1 className="text-xl font-bold">eMART</h1>
           </Link>
         </div>
 
@@ -63,7 +64,7 @@ const Sidebar = () => {
 
         {/* Sidebar footer */}
         <div className="mt-auto pt-6 text-xs text-base-content/70">
-          © 2025 PhiMart Admin
+          © 2025 eMart Admin
         </div>
       </aside>
     </div>
